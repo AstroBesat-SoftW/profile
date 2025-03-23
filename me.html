@@ -147,27 +147,10 @@ executeFrame();
   <a href="#" id="warp">Işınlan</a>
   
   <!-- Profil Bölümü -->
-  <div id="profile">
-    <img src="profil.jpg" alt="Profil Resmi" id="profile-img">
-    <h2>Besat Çıngar</h2>
-    <p>Yazılım Mühendisi, Gökyüzü Gözlemcisi, Teknoloji Meraklısı</p>
-    
- <div class="social-links" style="display: flex; align-items: center;">
-  <a href="https://github.com/AstroBesat-SoftW" target="_blank" style="display: flex; align-items: center; margin-right: 15px;">
-    <img src="github.png" alt="GitHub İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    GitHub
-  </a>
-  <a href="https://www.instagram.com/astrobesat" target="_blank" style="display: flex; align-items: center; margin-right: 15px;">
-    <img src="instagram.png" alt="Instagram İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    Instagram
-  </a>
-  <a href="https://www.linkedin.com/in/besat-ç%C4%B1ngar-a63b46279/" target="_blank" style="display: flex; align-items: center;">
-    <img src="linked.png" alt="LinkedIn İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    LinkedIn
-  </a>
-</div>
+ <div id="profile">
 
-  </div>
+  <h2>Ben Kimim?</h2>
+  <p>Merhaba! Ben Besat Çıngar. Teknoloji dünyasının derinliklerine dalarken, yazılım geliştirme ve dijital dönüşüm konusunda kendimi sürekli olarak geliştirmeyi hedefliyorum. Yıldızlar ve gökyüzü benim için sadece bir hobi değil, aynı zamanda ilham kaynağı. Kod yazarken, tıpkı gökyüzünü gözlemlerken olduğu gibi her şeyin bir düzeni olduğunu düşünüyorum. Hedefim, her satır kodda daha iyi bir çözüm üretmek ve hayatı daha verimli hale getirecek projelere imza atmak. Teknoloji, gökyüzü ve yazılım arasındaki bu bağı keşfetmeye devam ediyorum!</p>
 </div>
 
 
@@ -219,29 +202,22 @@ executeFrame();
     left: 50%;
     transform: translateX(-50%);
     color: white;
-    text-align: center;
+    
   }
 
-  #profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
-
+ 
   #profile h2 {
     font-size: 1.5em;
     margin: 10px 0;
   }
 
   #profile p {
-    font-size: 0.8em;
+    font-size: 0.7em;
     margin: 5px 0;
   }
 
   .social-links {
     margin-top: 20px;
-    font-size: 10px;
   }
 
   .social-links a {
@@ -377,7 +353,7 @@ executeFrame();
    document.getElementById("warp").addEventListener("click", function(event) {
     event.preventDefault(); // Linkin varsayılan davranışını engelle
     setTimeout(function() {
-      window.location.href = "me.html";
+      window.location.href = "index.html";
     }, 2000); // 3 saniye sonra yönlendirme
   });
 </script>
