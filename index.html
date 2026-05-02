@@ -1,385 +1,651 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Besat Çıngar — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --bg2: #eeecea;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.05);
+    --accent: #2a6049;
+    --accent2: #1a5276;
+    --accent3: #6d4c9e;
+    --accentlt: #e6f2ed;
+    --accentlt2: #e4edf6;
+    --text: #18181e;
+    --muted: #78788a;
+    --card: #ffffff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    position: fixed; top:0; left:0; right:0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 52px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(247,246,243,0.9);
+    backdrop-filter: blur(16px);
+    z-index: 100;
+  }
+  .download-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none; border-radius: 4px; font-weight: 500;
+  }
+  .download-btn:hover { background: var(--accent); color: #fff; }
+  .download-btn svg { width:13px; height:13px; flex-shrink:0; }
+  .lang-toggle {
+    display: flex; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: 40px; padding: 3px; gap: 2px;
+  }
+  .lang-btn {
+    padding: 5px 14px; border-radius: 30px;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+    cursor: pointer; border: none; background: transparent; color: var(--muted);
+    transition: all 0.2s; font-weight: 500; display: flex; align-items: center; gap: 5px;
+  }
+  .lang-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+  /* ─── LAYOUT ─── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 0 52px; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 140px 52px 80px;
+    max-width: 1100px; margin: 0 auto; position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.65s 0.1s forwards;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--accent); }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(56px, 9vw, 108px);
+    font-weight: 800; line-height: 0.92; letter-spacing: -0.04em;
+    margin-bottom: 36px;
+    opacity: 0; animation: fadeUp 0.65s 0.2s forwards;
+    color: var(--text);
+  }
+  .hero-name em { font-style: normal; color: var(--accent); }
+  .hero-bio {
+    max-width: 620px; font-size: 16px; line-height: 1.8;
+    color: var(--muted); font-weight: 300; margin-bottom: 52px;
+    opacity: 0; animation: fadeUp 0.65s 0.3s forwards;
+  }
+  .hero-bio strong { color: var(--text); font-weight: 500; }
+  .hero-links {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.65s 0.4s forwards;
+  }
+  .hero-link {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: 7px;
+    padding-bottom: 4px; border-bottom: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .hero-link:hover { color: var(--accent); border-color: var(--accent); }
+  .hero-scroll {
+    position: absolute; bottom: 44px; left: 52px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeUp 0.65s 0.6s forwards;
+  }
+  .scroll-line {
+    width: 32px; height: 1px; background: var(--accent);
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 96px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.25em; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 48px; display: flex; align-items: center; gap: 14px;
+  }
+  .section-label::after { content:''; flex:1; height:1px; background: var(--border); }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 46px); font-weight: 700;
+    letter-spacing: -0.025em; margin-bottom: 16px; line-height: 1.1; color: var(--text);
+  }
+
+  /* ─── ABOUT / SKILLS ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+  .about-text { font-size: 15px; color: var(--muted); line-height: 1.85; margin-top: 20px; }
+  .skills-grid { display: grid; gap: 13px; margin-top: 4px; }
+  .skill-group {
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 17px 21px; background: var(--card);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .skill-group:hover { border-color: rgba(42,96,73,0.2); box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .skill-group-title {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    padding: 3px 9px; background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 3px; color: var(--text); letter-spacing: 0.04em;
+  }
+
+  /* ─── EXPERIENCE ─── */
+  .exp-item {
+    display: grid; grid-template-columns: 190px 1fr; gap: 36px;
+    padding: 30px 0; border-bottom: 1px solid var(--border2); align-items: start;
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-company { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .exp-role { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 7px; }
+  .exp-date { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); }
+  .exp-desc { font-size: 14px; color: var(--muted); line-height: 1.75; }
+  .exp-desc ul { list-style: none; display: grid; gap: 7px; }
+  .exp-desc li::before { content: '→ '; color: var(--accent); font-family: 'DM Mono', monospace; font-size: 10px; }
+
+  /* ─── PROJECTS ─── */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }
+  .project-card {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 24px; background: var(--card);
+    transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+    display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity:0; transition: opacity 0.25s;
+  }
+  .project-card:hover { border-color: rgba(42,96,73,0.2); box-shadow: 0 6px 22px rgba(0,0,0,0.07); transform: translateY(-2px); }
+  .project-card:hover::before { opacity:1; }
+  .project-badge {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 3px; align-self: flex-start;
+    background: var(--accentlt); color: var(--accent); border: 1px solid rgba(42,96,73,0.14);
+  }
+  .project-badge.b2 { background: var(--accentlt2); color: var(--accent2); border-color: rgba(26,82,118,0.14); }
+  .project-badge.b3 { background: #f2eef9; color: var(--accent3); border-color: rgba(109,76,158,0.14); }
+  .project-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; line-height: 1.2; color: var(--text); }
+  .project-desc { font-size: 13px; color: var(--muted); line-height: 1.65; flex:1; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+  .tech-tag { font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 7px; background: var(--bg2); color: var(--muted); border-radius: 2px; border: 1px solid var(--border); }
+
+  /* ─── EDUCATION ─── */
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+  .edu-card { border: 1px solid var(--border); border-radius: 10px; padding: 24px; background: var(--card); transition: box-shadow 0.2s, border-color 0.2s; }
+  .edu-card:hover { border-color: rgba(26,82,118,0.2); box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+  .edu-year { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent2); letter-spacing: 0.12em; margin-bottom: 10px; }
+  .edu-school { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; line-height: 1.2; color: var(--text); }
+  .edu-degree { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ─── LANGUAGES ─── */
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+  .lang-card { padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); text-align: center; transition: box-shadow 0.2s; }
+  .lang-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+  .lang-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .lang-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 7px; }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--bg2); border:1px solid var(--border); }
+  .dot.filled { background:var(--accent); border-color:var(--accent); }
+  .lang-level { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.12em; }
+
+  /* ─── CERTS ─── */
+  .certs-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 9px; }
+  .cert-item { display: flex; align-items: center; gap: 10px; padding: 12px 15px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); font-size: 13px; color: var(--muted); transition: all 0.2s; }
+  .cert-item:hover { border-color: rgba(109,76,158,0.2); color: var(--text); }
+  .cert-dot { width:5px; height:5px; border-radius:50%; background:var(--accent3); flex-shrink:0; }
+
+  /* ─── CONTACT ─── */
+  .contact-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+  .contact-card { flex:1; min-width:170px; border:1px solid var(--border); border-radius:8px; padding:22px; background:var(--card); text-decoration:none; transition:all 0.22s; display:flex; flex-direction:column; gap:7px; }
+  .contact-card:hover { border-color:rgba(42,96,73,0.25); box-shadow:0 4px 16px rgba(0,0,0,0.06); transform:translateY(-1px); }
+  .contact-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; color:var(--accent); text-transform:uppercase; }
+  .contact-value { font-size:14px; color:var(--text); font-weight:400; }
+
+  /* ─── FOOTER ─── */
+  footer { border-top:1px solid var(--border); padding:36px 52px; text-align:center; font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.1em; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes breathe { 0%,100%{opacity:0.4;width:24px} 50%{opacity:1;width:38px} }
+  .reveal { opacity:0; transform:translateY(18px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity:1; transform:none; }
+
+  /* ─── LANG HELPERS ─── */
+  [data-lang] { display:none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:760px){
+    .topbar{padding:14px 20px;}
+    .hero{padding:110px 20px 60px;}
+    .page{padding:0 20px;}
+    .two-col{grid-template-columns:1fr;gap:40px;}
+    .exp-item{grid-template-columns:1fr;gap:8px;}
+    footer{padding:28px 20px;}
+    .hero-scroll{left:20px;}
+  }
+</style>
 </head>
 <body>
 
-
-
-
-
-
-<style type="text/css">
-  
-  html,body{height:100%;max-width:100%;margin:0;overflow:hidden;background:rgba(0,10,20,1) url(https://i.imgur.com/r838U7u.jpg) center no-repeat;background-size:cover;image-rendering: pixelated; font-family:sans-serif}
-#space{width:100%}
-#warp{position:absolute;z-index:9;bottom:0;left:0;right:0;margin:20px auto;color:rgba(209, 255, 255,1);border:2px solid;padding:1em;width:10em;text-align:center;font-weight:700;font-size:1.2em;display:inline-block;text-decoration:none;background:rgba(0,0,0,0.8);
-transition:all 0.2s}
-#warp:hover{
-    box-shadow: 0 0 10px #eef, 0 0 12px #a0cdff inset;
-    text-shadow: 0 0 12px #489cfa, 0 0 5px #fff;
-}
-
-/* follow me @nodws */
-#btn-twtr{
-  clear:both;
-  color:#fff;
-  border:2px solid;
-  border-radius:3px;
-  text-align:center;
-  text-decoration:none;
-  display:block;
-  font-family:sans-serif;
-  font-size:14px;
-  width:13em;
-  padding:5px 10px;
-  font-weight:600;
-  position:absolute;
-  top:0;
-  right:10%;
-  margin:90vh 0;
-  background:rgba(0,0,0,0.2);
-  box-shadow:0 0 0px 3px rgba(0,0,0,0.2);
-  opacity:0.3
-}#btn-twtr:hover{color:#fff;opacity:1}
-
-</style>
-
-<script type="text/javascript">
-  //based on an Example by @curran
-window.requestAnimFrame = (function(){   return  window.requestAnimationFrame})();
-var canvas = document.getElementById("space");
-var c = canvas.getContext("2d");
-
-var numStars = 1900;
-var radius = '0.'+Math.floor(Math.random() * 9) + 1  ;
-var focalLength = canvas.width *2;
-var warp = 0;
-var centerX, centerY;
-
-var stars = [], star;
-var i;
-
-var animate = true;
-
-initializeStars();
-
-function executeFrame(){
-  
-  if(animate)
-    requestAnimFrame(executeFrame);
-  moveStars();
-  drawStars();
-}
-
-function initializeStars(){
-  centerX = canvas.width / 2;
-  centerY = canvas.height / 2;
-  
-  stars = [];
-  for(i = 0; i < numStars; i++){
-    star = {
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      z: Math.random() * canvas.width,
-      o: '0.'+Math.floor(Math.random() * 99) + 1
-    };
-    stars.push(star);
-  }
-}
-
-function moveStars(){
-  for(i = 0; i < numStars; i++){
-    star = stars[i];
-    star.z--;
-    
-    if(star.z <= 0){
-      star.z = canvas.width;
-    }
-  }
-}
-
-function drawStars(){
-  var pixelX, pixelY, pixelRadius;
-  
-  // Resize to the screen
-  if(canvas.width != window.innerWidth || canvas.width != window.innerWidth){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initializeStars();
-  }
-  if(warp==0)
-  {c.fillStyle = "rgba(0,10,20,1)";
-  c.fillRect(0,0, canvas.width, canvas.height);}
-  c.fillStyle = "rgba(209, 255, 255, "+radius+")";
-  for(i = 0; i < numStars; i++){
-    star = stars[i];
-    
-    pixelX = (star.x - centerX) * (focalLength / star.z);
-    pixelX += centerX;
-    pixelY = (star.y - centerY) * (focalLength / star.z);
-    pixelY += centerY;
-    pixelRadius = 1 * (focalLength / star.z);
-    
-    c.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
-    c.fillStyle = "rgba(209, 255, 255, "+star.o+")";
-    //c.fill();
-  }
-}
-
-document.getElementById('warp').addEventListener("click",function(e){
- window.warp = window.warp==1 ? 0 : 1;
-window.c.clearRect(0, 0, window.canvas.width, window.canvas.height);
-executeFrame();
-});
-
-executeFrame();
-
-</script>
-
-
-<div id='w'>
-  <canvas id="space"></canvas>
-
-  <a href="#" id="warp">Işınlan</a>
-  
-  <!-- Profil Bölümü -->
-  <div id="profile">
-    <img src="profil.jpg" alt="Profil Resmi" id="profile-img">
-    <h2>Besat Çıngar</h2>
-    <p>Yazılım Mühendisi, Gökyüzü Gözlemcisi, Teknoloji Meraklısı</p>
-    
- <div class="social-links" style="display: flex; align-items: center;">
-  <a href="https://github.com/AstroBesat-SoftW" target="_blank" style="display: flex; align-items: center; margin-right: 15px;">
-    <img src="github.png" alt="GitHub İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    GitHub
+<header class="topbar">
+  <a class="download-btn" href="#" onclick="downloadCV(event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+    </svg>
+    <span id="dl-label">Download CV</span>
   </a>
-  <a href="https://www.instagram.com/astrobesat" target="_blank" style="display: flex; align-items: center; margin-right: 15px;">
-    <img src="instagram.png" alt="Instagram İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    Instagram
-  </a>
-  <a href="https://www.linkedin.com/in/besat-ç%C4%B1ngar-a63b46279/" target="_blank" style="display: flex; align-items: center;">
-    <img src="linked.png" alt="LinkedIn İkonu" style="width: 20px; height: 20px; margin-right: 8px;">
-    LinkedIn
-  </a>
-</div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">🇬🇧 EN</button>
+    <button class="lang-btn" onclick="setLang('tr')" id="btn-tr">🇹🇷 TR</button>
+  </div>
+</header>
 
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow" id="ey-en">Computer Engineer</div>
+  <div class="hero-eyebrow" id="ey-tr" style="display:none;">Bilgisayar Mühendisi</div>
+
+  <h1 class="hero-name">Besat<br><em>Çıngar</em></h1>
+
+  <p class="hero-bio" id="bio-en">
+    I studied <strong>Computer Engineering</strong> and <strong>Computer Programming</strong>. My main drive is connecting software with science — and integrating hardware into that process. I've worked across many fields: <strong>AI & machine learning</strong>, <strong>astronomy and computer vision</strong>, <strong>remote-controlled systems</strong>, <strong>agricultural technologies</strong> (remote sensing and scientific analysis), and <strong>mathematics through software</strong>. I also founded <strong>Düşünürler Dergisi</strong> — gathering young writers from many disciplines to publish a collective magazine and encourage intellectual production.
+  </p>
+  <p class="hero-bio" id="bio-tr" style="display:none;">
+    <strong>Bilgisayar Mühendisliği</strong> ve <strong>Bilgisayar Programcılığı</strong> okudum. Temel motivasyonum yazılım ile bilimi birleştirmek; bunu yaparken donanımı da sürece entegre etmek. Çalıştığım alanlar: <strong>yapay zeka ve makine öğrenmesi</strong>, <strong>astronomi ve görü</strong>, <strong>uzaktan kontrollü sistemler</strong>, <strong>ziraat teknolojileri</strong> (uzaktan kontrol ve bilimsel analiz), <strong>matematik ve yazılım</strong>. Bunların yanı sıra <strong>Düşünürler Dergisi</strong>'ni kurdum — farklı alanlardaki genç yazarları bir araya getirerek kolektif bir dergi yayımladım.
+  </p>
+
+  <div class="hero-links">
+    <a class="hero-link" href="mailto:besat59@gmail.com">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+      besat59@gmail.com
+    </a>
+    <a class="hero-link" href="https://www.linkedin.com/in/besat-%C3%A7%C4%B1ngar-a63b46279/" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7H10v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a class="hero-link" href="https://github.com/AstroBesat-SoftW" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 00-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 004 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S9 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+      GitHub
+    </a>
+    <a class="hero-link" href="tel:+905347018132">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 12a19.8 19.8 0 01-3-8.59A2 2 0 012 1.22h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+      +90 534 701 8132
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span id="sc-en">Scroll to explore</span>
+    <span id="sc-tr" style="display:none;">Kaydır</span>
   </div>
 </div>
 
+<div class="page">
 
-<style type="text/css">
-  html,body {
-    height: 100%;
-    max-width: 100%;
-    margin: 0;
-    overflow: hidden;
-    background: rgba(0,10,20,1) url(https://i.imgur.com/r838U7u.jpg) center no-repeat;
-    background-size: cover;
-    image-rendering: pixelated;
-    font-family: sans-serif;
+  <!-- SKILLS -->
+  <section>
+    <div class="section-label reveal" id="sl1-en">01 — Skills</div>
+    <div class="section-label reveal" id="sl1-tr" style="display:none;">01 — Yetenekler</div>
+    <div class="two-col">
+      <div>
+        <h2 class="section-title reveal" id="st1-en">Technical Stack</h2>
+        <h2 class="section-title reveal" id="st1-tr" style="display:none;">Teknik Yetenek</h2>
+        <p class="about-text reveal" id="at-en">From embedded sensors to deep learning models — I work across the full spectrum. My interest lies at the intersection of disciplines: writing code that understands the world.</p>
+        <p class="about-text reveal" id="at-tr" style="display:none;">Gömülü sensörlerden derin öğrenme modellerine kadar tüm spektrumda çalışıyorum. İlgim disiplinlerin kesişim noktasında: dünyayı anlayan kod yazmak.</p>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-group">
+          <div class="skill-group-title" id="sg1-en">Languages</div>
+          <div class="skill-group-title" id="sg1-tr" style="display:none;">Diller</div>
+          <div class="skill-tags">
+            <span class="tag">Python</span><span class="tag">Dart</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">C#</span><span class="tag">PHP</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title" id="sg2-en">Mobile &amp; Web</div>
+          <div class="skill-group-title" id="sg2-tr" style="display:none;">Mobil &amp; Web</div>
+          <div class="skill-tags"><span class="tag">Flutter</span><span class="tag">Django</span><span class="tag">Kivy</span><span class="tag">WordPress</span><span class="tag">XAMPP</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title" id="sg3-en">AI &amp; Databases</div>
+          <div class="skill-group-title" id="sg3-tr" style="display:none;">Yapay Zeka &amp; Veri Tabanı</div>
+          <div class="skill-tags"><span class="tag">OpenCV</span><span class="tag">Tesseract OCR</span><span class="tag">Jetson Nano</span><span class="tag">MySQL</span><span class="tag">Firebase</span><span class="tag">MSSQL</span></div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title" id="sg4-en">Embedded &amp; IoT</div>
+          <div class="skill-group-title" id="sg4-tr" style="display:none;">Gömülü &amp; IoT</div>
+          <div class="skill-tags"><span class="tag">Arduino</span><span class="tag">ESP8266</span><span class="tag">Edge AI</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section>
+    <div class="section-label reveal" id="sl2-en">02 — Experience</div>
+    <div class="section-label reveal" id="sl2-tr" style="display:none;">02 — Deneyim</div>
+    <div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-company">Google Club &amp; Devfest</div>
+          <div class="exp-role" id="er1-en">Project Manager</div>
+          <div class="exp-role" id="er1-tr" style="display:none;">Proje Yöneticisi</div>
+          <div class="exp-date">2025 – 2026</div>
+        </div>
+        <div class="exp-desc">
+          <ul id="ed1-en"><li>Managed project workflows for NKU Google Club and organized technical training events.</li><li>Designed and launched the official club website <strong>nkugoogle.info</strong>.</li><li>Optimized digital workflows using Google Forms and Blog integrations.</li></ul>
+          <ul id="ed1-tr" style="display:none;"><li>NKU Google Kulübü bünyesinde proje yönetimi süreçlerini yürüttüm ve teknik eğitimler organize ettim.</li><li>Kulübün resmi sitesi <strong>nkugoogle.info</strong>'yu tasarlayarak hayata geçirdim.</li><li>Google Forms ve Blog entegrasyonları ile dijital süreçleri optimize ettim.</li></ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-company">Düşünürler Dergisi</div>
+          <div class="exp-role" id="er2-en">Founder</div>
+          <div class="exp-role" id="er2-tr" style="display:none;">Kurucu</div>
+          <div class="exp-date">2022 – 2025</div>
+        </div>
+        <div class="exp-desc">
+          <ul id="ed2-en"><li>Founded and built the technical infrastructure for <strong>dusunurlerdergisi.com</strong>.</li><li>Gathered young writers from diverse disciplines to publish a collective magazine.</li></ul>
+          <ul id="ed2-tr" style="display:none;"><li><strong>dusunurlerdergisi.com</strong> platformunun teknik altyapısını kurdum.</li><li>Farklı alanlardaki genç yazarları bir araya getirerek kolektif dergi yayımladım.</li></ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-company">Bionluk</div>
+          <div class="exp-role" id="er3-en">Team Manager · Freelance</div>
+          <div class="exp-role" id="er3-tr" style="display:none;">Ekip Yöneticisi · Freelance</div>
+          <div class="exp-date">—</div>
+        </div>
+        <div class="exp-desc">
+          <ul id="ed3-en"><li>Managed web and mobile app development for clients.</li><li>Built dynamic trading/listing systems with MySQL backends.</li><li>Published Firebase-integrated mobile apps.</li></ul>
+          <ul id="ed3-tr" style="display:none;"><li>Müşterilere yönelik web ve mobil uygulama geliştirme süreçlerini yönettim.</li><li>MySQL bağlantılı alım-satım ve listeleme sistemleri geliştirdim.</li><li>Firebase entegrasyonlu mobil uygulamaları marketlere aldım.</li></ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-company">ML Bilgisayar Ltd.</div>
+          <div class="exp-role" id="er4-en">Software Intern</div>
+          <div class="exp-role" id="er4-tr" style="display:none;">Yazılım Stajyeri</div>
+          <div class="exp-date">—</div>
+        </div>
+        <div class="exp-desc">
+          <ul id="ed4-en"><li>Participated in software development lifecycles.</li><li>Gained hands-on experience in hardware-software integration.</li></ul>
+          <ul id="ed4-tr" style="display:none;"><li>Yazılım geliştirme süreçlerine katılım sağladım.</li><li>Donanım ve yazılım entegrasyonu üzerine pratik deneyim kazandım.</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <div class="section-label reveal" id="sl3-en">03 — Projects</div>
+    <div class="section-label reveal" id="sl3-tr" style="display:none;">03 — Projeler</div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <span class="project-badge b3">🏆 TEKNOFEST Finalist 2025</span>
+        <h3 class="project-title">MathPath &amp; Morse</h3>
+        <p class="project-desc" id="pd1-en">Mobile tools on app markets for advanced mathematical calculations and text-to-Morse code conversion.</p>
+        <p class="project-desc" id="pd1-tr" style="display:none;">Uygulama marketlerinde yayında olan gelişmiş matematik hesaplama ve metin-mors dönüşüm araçları.</p>
+        <div class="project-tech"><span class="tech-tag">Flutter</span><span class="tech-tag">Dart</span><span class="tech-tag">Mobile</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge">AI · Deep Learning</span>
+        <h3 class="project-title" id="pt2-en">Genetic Disease Prediction</h3>
+        <h3 class="project-title" id="pt2-tr" style="display:none;">Genetik Hastalık Tahmini</h3>
+        <p class="project-desc" id="pd2-en">Deep Learning model analyzing genetic sequence data to detect potential disease risks and predispositions.</p>
+        <p class="project-desc" id="pd2-tr" style="display:none;">Gen dizilim verilerini analiz ederek hastalık risklerini tespit eden Derin Öğrenme modeli.</p>
+        <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">Deep Learning</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge b2">Algorithm Design</span>
+        <h3 class="project-title" id="pt3-en">Image Compression Engine</h3>
+        <h3 class="project-title" id="pt3-tr" style="display:none;">Görüntü Sıkıştırma Motoru</h3>
+        <p class="project-desc" id="pd3-en">Original engine using Modified RLE + LZW-like algorithms. Reduced 210 KB raw data to 16 KB with minimal quality loss.</p>
+        <p class="project-desc" id="pd3-tr" style="display:none;">Modifiye RLE + LZW benzeri algoritmalar kullanan özgün motor. 210 KB'ı 16 KB'a indirdi.</p>
+        <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">Algorithms</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge b3">TÜBİTAK 2209A</span>
+        <h3 class="project-title" id="pt4-en">Hieroglyph Translator</h3>
+        <h3 class="project-title" id="pt4-tr" style="display:none;">Hiyeroglif Çevirici</h3>
+        <p class="project-desc" id="pd4-en">Mobile app using OpenCV and Tesseract OCR to scan ancient Egyptian hieroglyphs via camera and provide instant translation.</p>
+        <p class="project-desc" id="pd4-tr" style="display:none;">Kamera ile hiyeroglifleri tarayıp anlık çeviri yapan OpenCV + Tesseract OCR tabanlı mobil uygulama.</p>
+        <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">OpenCV</span><span class="tech-tag">Tesseract</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge b2">Web Dev</span>
+        <h3 class="project-title" id="pt5-en">Teknofest Team Manager</h3>
+        <h3 class="project-title" id="pt5-tr" style="display:none;">Teknofest Takım Yönetimi</h3>
+        <p class="project-desc" id="pd5-en">Jira-like platform for task distribution, process tracking, and project management across 3 teams.</p>
+        <p class="project-desc" id="pd5-tr" style="display:none;">3 takımın görev dağılımı ve süreç takibini sağlayan Jira benzeri yönetim platformu.</p>
+        <div class="project-tech"><span class="tech-tag">Full-Stack</span><span class="tech-tag">MySQL</span><span class="tech-tag">PHP</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge">IoT · Embedded</span>
+        <h3 class="project-title" id="pt6-en">Smart Plant System</h3>
+        <h3 class="project-title" id="pt6-tr" style="display:none;">Akıllı Bitki Sistemi</h3>
+        <p class="project-desc" id="pd6-en">Arduino-based IoT system tracking plant health with real-time sensors for optimal growth conditions.</p>
+        <p class="project-desc" id="pd6-tr" style="display:none;">Gerçek zamanlı sensörlerle bitki sağlığını takip eden Arduino tabanlı IoT sistemi.</p>
+        <div class="project-tech"><span class="tech-tag">Arduino</span><span class="tech-tag">IoT</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge b2">EdTech</span>
+        <h3 class="project-title" id="pt7-en">Logic Gates Simulator</h3>
+        <h3 class="project-title" id="pt7-tr" style="display:none;">Mantık Kapıları Simülatörü</h3>
+        <p class="project-desc" id="pd7-en">Interactive web-based simulation for logic circuit education at <a href="https://nkugoogle.info/mantik" target="_blank" style="color:var(--accent2)">nkugoogle.info/mantik</a>.</p>
+        <p class="project-desc" id="pd7-tr" style="display:none;">Mantık devreleri eğitimi için interaktif web simülasyonu: <a href="https://nkugoogle.info/mantik" target="_blank" style="color:var(--accent2)">nkugoogle.info/mantik</a>.</p>
+        <div class="project-tech"><span class="tech-tag">JavaScript</span><span class="tech-tag">HTML/CSS</span></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge">IoT · Robotics</span>
+        <h3 class="project-title" id="pt8-en">RC Vehicle (ESP8266)</h3>
+        <h3 class="project-title" id="pt8-tr" style="display:none;">Uzaktan Araç (ESP8266)</h3>
+        <p class="project-desc" id="pd8-en">Robotic vehicle controllable via Wi-Fi using ESP8266. Demo and driving tests published on YouTube.</p>
+        <p class="project-desc" id="pd8-tr" style="display:none;">ESP8266 Wi-Fi ile uzaktan komuta edilebilen robotik araç. Testler YouTube'da yayında.</p>
+        <div class="project-tech"><span class="tech-tag">ESP8266</span><span class="tech-tag">Arduino</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section>
+    <div class="section-label reveal" id="sl4-en">04 — Education</div>
+    <div class="section-label reveal" id="sl4-tr" style="display:none;">04 — Eğitim</div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-year">2023 – 2026</div>
+        <div class="edu-school" id="es1-en">Tekirdağ Namık Kemal Univ.</div>
+        <div class="edu-school" id="es1-tr" style="display:none;">Tekirdağ Namık Kemal Üni.</div>
+        <div class="edu-degree" id="ed1e-en">B.S. Computer Engineering</div>
+        <div class="edu-degree" id="ed1e-tr" style="display:none;">Bilgisayar Mühendisliği</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-year">2021 – 2023</div>
+        <div class="edu-school" id="es2-en">Çanakkale 18 Mart Univ.</div>
+        <div class="edu-school" id="es2-tr" style="display:none;">Çanakkale 18 Mart Üni.</div>
+        <div class="edu-degree" id="ed2e-en">Associate — Computer Programming</div>
+        <div class="edu-degree" id="ed2e-tr" style="display:none;">Ön Lisans — Bilgisayar Programcılığı</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-year">2023 – 2024</div>
+        <div class="edu-school">Google Game &amp; App Academy</div>
+        <div class="edu-degree" id="ed3e-en">Scholar · Software &amp; Entrepreneurship</div>
+        <div class="edu-degree" id="ed3e-tr" style="display:none;">Bursiyer · Yazılım &amp; Girişimcilik</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section>
+    <div class="section-label reveal" id="sl5-en">05 — Languages</div>
+    <div class="section-label reveal" id="sl5-tr" style="display:none;">05 — Diller</div>
+    <div class="lang-grid reveal">
+      <div class="lang-card">
+        <div class="lang-name" id="ln1-en">Turkish</div>
+        <div class="lang-name" id="ln1-tr" style="display:none;">Türkçe</div>
+        <div class="lang-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+        <div class="lang-level">NATIVE</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name" id="ln2-en">English</div>
+        <div class="lang-name" id="ln2-tr" style="display:none;">İngilizce</div>
+        <div class="lang-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="lang-level">INTERMEDIATE</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name" id="ln3-en">German</div>
+        <div class="lang-name" id="ln3-tr" style="display:none;">Almanca</div>
+        <div class="lang-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="lang-level">BEGINNER</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-name" id="ln4-en">Morse Code</div>
+        <div class="lang-name" id="ln4-tr" style="display:none;">Mors Alfabesi</div>
+        <div class="lang-dots"><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div></div>
+        <div class="lang-level">FLUENT · — ·–</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section>
+    <div class="section-label reveal" id="sl6-en">06 — Certificates</div>
+    <div class="section-label reveal" id="sl6-tr" style="display:none;">06 — Sertifikalar</div>
+    <div class="certs-list reveal">
+      <div class="cert-item"><div class="cert-dot"></div><span id="c1-en">TEKNOFEST 2025 Finalist</span><span id="c1-tr" style="display:none;">TEKNOFEST 2025 Finalisti</span></div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c2-en">TÜBİTAK 2209A Project Experience</span><span id="c2-tr" style="display:none;">TÜBİTAK 2209A Proje Deneyimi</span></div>
+      <div class="cert-item"><div class="cert-dot"></div>Google — Flutter App Development (2022–23)</div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c4-en">Google — Entrepreneurship (2023–24)</span><span id="c4-tr" style="display:none;">Google — Girişimcilik (2023–24)</span></div>
+      <div class="cert-item"><div class="cert-dot"></div>Google — Bootcamp (2023–24)</div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c6-en">Google — Project Management (2023–24)</span><span id="c6-tr" style="display:none;">Google — Proje Yönetimi (2023–24)</span></div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c7-en">Google — Agile Project Management</span><span id="c7-tr" style="display:none;">Google — Çevik Proje Yönetimi</span></div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c8-en">Google — Project Execution</span><span id="c8-tr" style="display:none;">Google — Projeyi Yürütme</span></div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c9-en">Google — Project Planning</span><span id="c9-tr" style="display:none;">Google — Proje Planlaması</span></div>
+      <div class="cert-item"><div class="cert-dot"></div><span id="c10-en">Google — Capstone: PM in the Real World</span><span id="c10-tr" style="display:none;">Google — Bitirme: PM Gerçek Dünyada</span></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section>
+    <div class="section-label reveal" id="sl7-en">07 — Contact</div>
+    <div class="section-label reveal" id="sl7-tr" style="display:none;">07 — İletişim</div>
+    <h2 class="section-title reveal" id="ct-en">Let's work together.</h2>
+    <h2 class="section-title reveal" id="ct-tr" style="display:none;">Birlikte çalışalım.</h2>
+    <div class="contact-row reveal">
+      <a class="contact-card" href="mailto:besat59@gmail.com">
+        <div class="contact-label">Email</div>
+        <div class="contact-value">besat59@gmail.com</div>
+      </a>
+      <a class="contact-card" href="tel:+905347018132">
+        <div class="contact-label">Phone</div>
+        <div class="contact-value">+90 534 701 8132</div>
+      </a>
+      <a class="contact-card" href="https://www.linkedin.com/in/besat-%C3%A7%C4%B1ngar-a63b46279/" target="_blank">
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">besat Çıngar</div>
+      </a>
+      <a class="contact-card" href="https://github.com/AstroBesat-SoftW" target="_blank">
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">AstroBesat-SoftW</div>
+      </a>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <span id="ft-en">Designed &amp; developed by Besat Çıngar · </span>
+  <span id="ft-tr" style="display:none;">Tasarlandı ve geliştirildi · Besat Çıngar · </span>
+  <span id="year"></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // All switchable element pairs (suffix -en / -tr)
+  const pairs = [
+    'ey','bio','sc','sl1','st1','at','sg1','sg2','sg3','sg4',
+    'sl2','er1','er2','er3','er4','ed1','ed2','ed3','ed4',
+    'sl3','pt2','pt3','pt4','pt5','pt6','pt7','pt8',
+    'pd1','pd2','pd3','pd4','pd5','pd6','pd7','pd8',
+    'sl4','es1','es2','ed1e','ed2e','ed3e',
+    'sl5','ln1','ln2','ln3','ln4',
+    'sl6','c1','c2','c4','c6','c7','c8','c9','c10',
+    'sl7','ct','ft'
+  ];
+
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    pairs.forEach(id => {
+      const en = document.getElementById(id + '-en');
+      const tr = document.getElementById(id + '-tr');
+      if (en) en.style.display = lang === 'en' ? '' : 'none';
+      if (tr) tr.style.display = lang === 'tr' ? '' : 'none';
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+    document.getElementById('dl-label').textContent = lang === 'tr' ? 'CV İndir' : 'Download CV';
   }
 
-  #space {
-    width: 100%;
+  function downloadCV(e) {
+    e.preventDefault();
+    const a = document.createElement('a');
+    a.href = currentLang === 'tr' ? 'cv/Besat_CV_tr.pdf' : 'cv/Besat_CV.pdf';
+    a.download = currentLang === 'tr' ? 'Besat_Cinkar_CV_TR.pdf' : 'Besat_Cinkar_CV_EN.pdf';
+    a.click();
   }
 
-  #warp {
-    position: absolute;
-    z-index: 9;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 20px auto;
-    color: rgba(209, 255, 255,1);
-    border: 2px solid;
-    padding: 1em;
-    width: 10em;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.2em;
-    display: inline-block;
-    text-decoration: none;
-    background: rgba(0,0,0,0.8);
-    transition: all 0.2s;
-  }
-
-  #warp:hover {
-    box-shadow: 0 0 10px #eef, 0 0 12px #a0cdff inset;
-    text-shadow: 0 0 12px #489cfa, 0 0 5px #fff;
-  }
-
-  /* Profil */
-  #profile {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    text-align: center;
-  }
-
-  #profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
-
-  #profile h2 {
-    font-size: 1.5em;
-    margin: 10px 0;
-  }
-
-  #profile p {
-    font-size: 0.8em;
-    margin: 5px 0;
-  }
-
-  .social-links {
-    margin-top: 20px;
-    font-size: 10px;
-  }
-
-  .social-links a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 1.2em;
-  }
-
-  .social-links a:hover {
-    color: #1e90ff;
-  }
-
-  /* Follow me @nodws */
-  #btn-twtr {
-    clear: both;
-    color: #fff;
-    border: 2px solid;
-    border-radius: 3px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-family: sans-serif;
-    font-size: 14px;
-    width: 13em;
-    padding: 5px 10px;
-    font-weight: 600;
-    position: absolute;
-    top: 0;
-    right: 10%;
-    margin: 90vh 0;
-    background: rgba(0,0,0,0.2);
-    box-shadow: 0 0 0px 3px rgba(0,0,0,0.2);
-    opacity: 0.3;
-  }
-
-  #btn-twtr:hover {
-    color: #fff;
-    opacity: 1;
-  }
-
-</style>
-
-<script type="text/javascript">
-  window.requestAnimFrame = (function(){ return window.requestAnimationFrame })();
-  var canvas = document.getElementById("space");
-  var c = canvas.getContext("2d");
-
-  var numStars = 1900;
-  var radius = '0.'+Math.floor(Math.random() * 9) + 1;
-  var focalLength = canvas.width * 2;
-  var warp = 0;
-  var centerX, centerY;
-
-  var stars = [], star;
-  var i;
-
-  var animate = true;
-
-  initializeStars();
-
-  function executeFrame() {
-    if(animate) requestAnimFrame(executeFrame);
-    moveStars();
-    drawStars();
-  }
-
-  function initializeStars() {
-    centerX = canvas.width / 2;
-    centerY = canvas.height / 2;
-
-    stars = [];
-    for(i = 0; i < numStars; i++) {
-      star = {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        z: Math.random() * canvas.width,
-        o: '0.' + Math.floor(Math.random() * 99) + 1
-      };
-      stars.push(star);
-    }
-  }
-
-  function moveStars() {
-    for(i = 0; i < numStars; i++) {
-      star = stars[i];
-      star.z--;
-
-      if(star.z <= 0) {
-        star.z = canvas.width;
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 55);
+        obs.unobserve(entry.target);
       }
-    }
-  }
-
-  function drawStars() {
-    var pixelX, pixelY, pixelRadius;
-
-    if(canvas.width != window.innerWidth || canvas.width != window.innerWidth) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initializeStars();
-    }
-
-    if(warp == 0) {
-      c.fillStyle = "rgba(0,10,20,1)";
-      c.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    c.fillStyle = "rgba(209, 255, 255, " + radius + ")";
-    for(i = 0; i < numStars; i++) {
-      star = stars[i];
-
-      pixelX = (star.x - centerX) * (focalLength / star.z);
-      pixelX += centerX;
-      pixelY = (star.y - centerY) * (focalLength / star.z);
-      pixelY += centerY;
-      pixelRadius = 1 * (focalLength / star.z);
-
-      c.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
-      c.fillStyle = "rgba(209, 255, 255, " + star.o + ")";
-    }
-  }
-
-  document.getElementById('warp').addEventListener("click", function(e) {
-    window.warp = window.warp == 1 ? 0 : 1;
-    window.c.clearRect(0, 0, window.canvas.width, window.canvas.height);
-    executeFrame();
-  });
-
-  executeFrame();
-
-
-   document.getElementById("warp").addEventListener("click", function(event) {
-    event.preventDefault(); // Linkin varsayılan davranışını engelle
-    setTimeout(function() {
-      window.location.href = "me.html";
-    }, 2000); // 3 saniye sonra yönlendirme
-  });
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
